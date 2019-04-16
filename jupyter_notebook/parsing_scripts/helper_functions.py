@@ -21,7 +21,7 @@ def get_biosample_attribute(query_accession, db):
 
 def add_biosample_title(df, query_accession, db):
     """The 'db' input must be an SRAdb object (from the pysradb library) connected to a copy of the SRAmetadb.sqlite database."""
-    df['biosample_title'] = df.apply(lambda x: get_biosample_title(x["accession"], db).get("experiment_title")[0], axis=1)
+    df['biosample_title'] = df.apply(lambda x: get_biosample_title(x["subject_accession"], db).get("experiment_title")[0], axis=1)
     return df
 
 def add_biosample_attribute(df, query_accession, db):
@@ -38,7 +38,7 @@ def get_query_taxid(query_id, query_records, tax_dict):
 def get_taxon_dict(df, query_fasta_file):
     with open(query_fasta_file, 'r') as query_fasta:
         names = list(SeqIO.parse(query_fasta, 'fasta'))
-    with open('../nr.nucl_gb.acc2taxid.txt', 'r') as csvfile:
+    with open('../data/nr.nucl_gb.acc2taxid.txt', 'r') as csvfile:
         rows = csv.reader(csvfile, delimiter='\t')
         taxon_dict = {row[1]: row[2] for row in rows}
     accs = list(set(df['query']))
