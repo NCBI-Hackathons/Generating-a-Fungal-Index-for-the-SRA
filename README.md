@@ -5,6 +5,8 @@ Fungi are essential to ecosystems, but some species are deadly to plants and ani
 
 See the [hackathon wiki](https://github.com/NCBI-Hackathons/Generating-a-Fungal-Index-for-the-SRA/wiki) for further details.
 
+![](https://raw.githubusercontent.com/NCBI-Hackathons/Generating-a-Fungal-Index-for-the-SRA/master/presentations/images/Notebook-Enhance%20.png)
+
 ## Cloning the repository
 
 The repository contains files larger than the github imposed limit (100MB). In order to clone the repository you need to install [git-lfs](https://git-lfs.github.com/).
