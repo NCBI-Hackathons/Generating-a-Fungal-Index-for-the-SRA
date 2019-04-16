@@ -5,8 +5,8 @@ from pysradb import SRAdb, download_sradb_file
 
 db = SRAdb('SRAmetadb.sqlite')
 
-def get_biosample_title(query_accession, db):
-    """Retrieve biosample record title for the given query accession number (ID beginning with SRR, DRR, or ERR.)"""
+def get_experiment_title(query_accession, db):
+    """Retrieve experiment title (also title on biosample page) for the given query accession number (ID beginning with SRR, DRR, or ERR.)"""
     run_accession=query_accession.split(".")[0]
     df = db.query('select experiment_title from sra where run_accession="{run_accession_id}";'.format(run_accession_id=run_accession))
     return df
@@ -18,11 +18,11 @@ def get_biosample_attribute(query_accession, db):
     return df
 
 def add_biosample_title(df, query_accession, db):
-    df['biosample_title'] = df.apply(lambda x: get_biosample_title(x, db).get("experiment_title")[0], axis=1)
+    df['biosample_title'] = df.apply(lambda x: get_biosample_title(x["accession"], db).get("experiment_title")[0], axis=1)
     return df
 
 def add_biosample_attribute(df, query_accession, db):
-    df['biosample_attr'] = df.apply(lambda x: get_biosample_title(x, db).get("sample_attribute")[0], axis=1)
+    df['biosample_attr'] = df.apply(lambda x: get_biosample_title(x["subject_accession"], db).get("sample_attribute")[0], axis=1)
     return df
 
 def get_query_taxid(query_id, query_records, tax_dict):
