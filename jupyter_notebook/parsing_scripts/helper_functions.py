@@ -8,25 +8,25 @@ db = SRAdb('SRAmetadb.sqlite')
 def get_experiment_title(query_accession, db):
     """Retrieve experiment title (also title on biosample page) for the given query accession number (ID beginning with SRR, DRR, or ERR.)
     The 'db' input must be an SRAdb object (from the pysradb library) connected to a copy of the SRAmetadb.sqlite database."""
-    run_accession=query_accession.split(".")[0]
+    run_accession = query_accession.split(".")[0]
     df = db.query('select experiment_title from sra where run_accession="{run_accession_id}";'.format(run_accession_id=run_accession))
     return df
 
 def get_biosample_attribute(query_accession, db):
     """Retrieve biosample record attributes for the given query accession number (ID beginning with SRR, DRR, or ERR.)
     The 'db' input must be an SRAdb object (from the pysradb library) connected to a copy of the SRAmetadb.sqlite database."""
-    run_accession=query_accession.split(".")[0]
+    run_accession = query_accession.split(".")[0]
     df = db.query('select sample.sample_attribute from sample INNER JOIN sra ON sra.sample_accession=sample.sample_accession WHERE sra.run_accession="{run_accession_id}";'.format(run_accession_id=run_accession))
     return df
 
-def add_biosample_title(df, query_accession, db):
+def add_experiment_title(df, db):
     """The 'db' input must be an SRAdb object (from the pysradb library) connected to a copy of the SRAmetadb.sqlite database."""
-    df['biosample_title'] = df.apply(lambda x: get_biosample_title(x["accession"], db).get("experiment_title")[0], axis=1)
+    df['experiment_title'] = df.apply(lambda x: get_experiment_title(x["subject_accession"], db).get("experiment_title")[0], axis=1)
     return df
 
-def add_biosample_attribute(df, query_accession, db):
+def add_biosample_attribute(df, db):
     """The 'db' input must be an SRAdb object (from the pysradb library) connected to a copy of the SRAmetadb.sqlite database."""
-    df['biosample_attr'] = df.apply(lambda x: get_biosample_title(x["subject_accession"], db).get("sample_attribute")[0], axis=1)
+    df['biosample_attr'] = df.apply(lambda x: get_biosample_attribute(x["subject_accession"], db).get("sample_attribute")[0], axis=1)
     return df
 
 def get_query_taxid(query_id, query_records, tax_dict):
