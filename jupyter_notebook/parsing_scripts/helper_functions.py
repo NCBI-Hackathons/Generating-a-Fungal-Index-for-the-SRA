@@ -38,7 +38,7 @@ def get_query_taxid(query_id, query_records, tax_dict):
 def get_taxon_dict(df, query_fasta_file):
     with open(query_fasta_file, 'r') as query_fasta:
         names = list(SeqIO.parse(query_fasta, 'fasta'))
-    with open('../nr.nucl_gb.acc2taxid.txt', 'r') as csvfile:
+    with open('../data/nr.nucl_gb.acc2taxid.txt', 'r') as csvfile:
         rows = csv.reader(csvfile, delimiter='\t')
         taxon_dict = {row[1]: row[2] for row in rows}
     accs = list(set(df['query']))
